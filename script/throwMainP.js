@@ -180,7 +180,7 @@ function draw() {
       rPlanes.push(rPlane);
       CW = false;
     } else if (pDead == true && AW == true) {
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 45; i++) {
         rPlane = new returnP(
           random(width, width + 50),
           random(height / 2.3, height / 1.7),
