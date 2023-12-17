@@ -6,8 +6,8 @@ let mPlane;
 
 //비행기 컨트롤
 let T10;
+let T20;
 let T30;
-let T31;
 
 let timer = 0;
 let accTime = 0.4;
@@ -45,6 +45,7 @@ let walls = [];
 let BW;
 let GW;
 let CW;
+let AW;
 
 // 배경 설정
 function preload() {
@@ -74,7 +75,9 @@ function setup() {
   // 바닥
   walls.push(new Walls(width / 2, height - 10, width, height / 7, {}));
   // 왼쪽 벽
-  walls.push(new Lamp(width / 5, height / 3, width / 8, width / 2, {}, lamp));
+  walls.push(
+    new Lamp(width / 5, height / 2.5, width / 10, width / 2.5, {}, lamp)
+  );
 
   // 마우스 컨트롤
   mouse = Mouse.create(canvas.elt);
@@ -91,26 +94,6 @@ function setup() {
 }
 
 function draw() {
-  // 초기 설정 단계
-  // 텍스트 양에 따른 비행기 속도 조절
-  console.log('30', T30);
-  if (T10 == true) {
-    accTime = 0.26;
-    speed = 3;
-    ascending = -0.2;
-    descending = 0.05;
-  } else if (T30 == true) {
-    accTime = 0.1;
-    speed = 3;
-    ascending = -0.2;
-    descending = 0.03;
-  } else if (T31 == true) {
-    accTime = 1;
-    speed = 100;
-    ascending = -0.5;
-    descending = 0.03;
-  }
-
   background(backgroundImage);
   //(1)
   //* 가는 비행기 *
@@ -129,7 +112,18 @@ function draw() {
         let force = createVector(0, descending);
         mP.applyForce(force);
       }
-      mP.update();
+
+      // 초기 설정 단계
+      // 텍스트 양에 따른 비행기 속도 조절
+      if (T10 == true) {
+        mP.update(7);
+      } else if (T20 == true) {
+        mP.update(5);
+      } else if (T30 == true) {
+        mP.update(3);
+      } else {
+        mP.update(10);
+      }
 
       // 화면 밖으로 나가면 사라짐
       if (mP.isDead()) {
@@ -145,9 +139,6 @@ function draw() {
 
     //(2)
     //* 돌아오는 비행기 생성 *
-    //비속어 -> 쓰레기
-    // 좋은 말일 때 -> 하트
-    //고양이 단어 -> 고양이 얼굴
     if (pDead == true && BW == true) {
       rPlane = new returnP(
         width,
@@ -165,23 +156,49 @@ function draw() {
       rPlanes.push(rPlane);
       BW = false;
     } else if (pDead == true && GW == true) {
-      rPlane = new Heart(width, height / 2, width / 20, width / 20, 10, heart, {
-        restitution: 0.6,
-        angle: radians(-20),
-        frictionAir: 0.1,
-      });
+      rPlane = new returnP(
+        width,
+        height / 2,
+        width / 20,
+        width / 20,
+        10,
+        heart,
+        {
+          restitution: 0.6,
+          angle: radians(-20),
+          frictionAir: 0.1,
+        }
+      );
       rPlanes.push(rPlane);
       GW = false;
     } else if (pDead == true && CW == true) {
-      rPlane = new Cat(width, height / 2, width / 15, width / 15, 10, cat, {
+      rPlane = new returnP(width, height / 2, width / 12, width / 12, 10, cat, {
         restitution: 0.6,
         angle: radians(-20),
         frictionAir: 0.1,
       });
       rPlanes.push(rPlane);
       CW = false;
+    } else if (pDead == true && AW == true) {
+      for (let i = 0; i < 30; i++) {
+        rPlane = new returnP(
+          random(width, width + 50),
+          random(height / 2.3, height / 1.7),
+          width / 25,
+          width / 25,
+          10,
+          paperBall,
+          {
+            restitution: 0.6,
+            angle: radians(-20),
+            frictionAir: 0.1,
+          }
+        );
+        rPlanes.push(rPlane);
+      }
+      AW = false;
     }
-    console.log('고양이', CW);
+    // console.log('고양이', CW);
 
     // console.log(mP.pos.y);
     push();
@@ -207,7 +224,7 @@ function draw() {
     }
     if (!mP.c) {
       // 왼쪽으로 향하도록 조절 *높이, 속도
-      mP.setVelocity(p5.Vector.mult(createVector(-2, 0.2).normalize(), 12));
+      mP.setVelocity(p5.Vector.mult(createVector(-3, 0.2).normalize(), 16));
     } else if (mP.c) {
       // 충돌 시, 떨어지는 비행기
       mP.setVelocity(p5.Vector.mult(createVector(0, 0.01).normalize(), 2));
@@ -232,15 +249,13 @@ function keyPressed() {
     isPressed = false;
     pDead = false;
     mPlanes.push(mPlane);
-    console.log(mPlanes.length);
+    console.log('mPlanes.length', mPlanes.length);
   }
 }
 
 //(1)
 //* 가는 비행기 *
 // 마우스 컨트롤 ** 캔버스의 일정 영역에 있을 경우 구현
-
-//영역을 벗어나면 자동으로 날아가도록 수정
 function mouseMoved() {
   if (!isMouseInsideCanvas()) return;
   for (let i = 0; i < mPlanes.length; i++) {

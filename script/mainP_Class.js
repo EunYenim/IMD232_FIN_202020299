@@ -20,9 +20,9 @@ class MainPlane {
     this.acc.add(acc);
   }
 
-  update() {
+  update(limit) {
     this.vel.add(this.acc);
-    this.vel.limit(10);
+    this.vel.limit(limit);
     this.pos.add(this.vel);
     this.acc.mult(0);
   }

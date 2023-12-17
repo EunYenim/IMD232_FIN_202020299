@@ -6,21 +6,27 @@ function countCharacters() {
   // 글자 수 판별
   // 글자 수가 30 이하일 때
   window.T10 = false;
+  window.T20 = false;
   window.T30 = false;
-  window.T31 = false;
 
-  if (charCount >= 10) {
+  if (charCount >= 20 && charCount < 30) {
+    T10 = false;
+    T20 = true;
+  } else if (charCount >= 10 && charCount < 20) {
     T10 = true;
-  } else if (charCount >= 30) {
+  } else if (charCount >= 20) {
+    T20 = false;
     T30 = true;
-  } else if (charCount > 30) {
-    T31 = true;
+  } else {
+    T10 = false;
+    T20 = false;
+    T30 = false;
   }
 
   // 각 상태 또는 데이터를 활용하거나 출력할 수 있습니다.
-  // console.log('10:', T10);
-  // console.log('30:', T30);
-  // console.log('31:', T31);
+  console.log('10:', T10);
+  console.log('20:', T20);
+  console.log('30:', T30);
 
   // 글자 수를 화면에 출력합니다.
   document.getElementById('charCount').innerText = charCount;
@@ -32,14 +38,19 @@ function countCharacters() {
   // let textContent = textField.value.toLowerCase();
 
   // 2) 칭찬, 감사 등 정의
-  let goodWords = ['사랑', '고마워', '좋아해'];
+  let goodWords = ['사랑해', '고마워', '좋아해'];
 
-  // 3) 특정 단어를 말할 시 그에 맞는 아이콘이 던져짐
+  // 3) 고양이
   let CatWords = ['고양이', '고양이 귀여워'];
+
+  // 3) 과제
+  let AWords = ['과제'];
 
   window.BW = false;
   window.GW = false;
   window.CW = false;
+  window.AW = false;
+
   // 비속어 판별
   badWords.forEach((targetWord) => {
     if (textContent.includes(targetWord.toLowerCase())) {
@@ -60,7 +71,11 @@ function countCharacters() {
       CW = true;
     }
   });
-}
 
-// 전봇대에 부딪힘
-//쓰레기 통에 넣으면 사라짐
+  //과제 단어 판별
+  AWords.forEach((targetWord) => {
+    if (textContent.includes(targetWord.toLowerCase())) {
+      AW = true;
+    }
+  });
+}
