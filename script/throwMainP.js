@@ -1,3 +1,8 @@
+// 참고** Example 6-8: MouseConstraint Demonstration(Modified by OO-SUNG SON (spctrm404)
+// Original Code from: https://editor.p5js.org/natureofcode/sketches/mTRKgn44p
+// Daniel Shiffman
+// The Nature of Code
+
 //(1)
 //* 가는 비행기 *
 let mPlanes = [];
