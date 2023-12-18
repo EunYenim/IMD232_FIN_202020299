@@ -1,4 +1,5 @@
 // 참고** Example 6-8: MouseConstraint Demonstration(Modified by OO-SUNG SON (spctrm404)
+// 참고** Example 2-2: Forces Acting on Two Objects(Modified by OO-SUNG SON (spctrm404)
 // Original Code from: https://editor.p5js.org/natureofcode/sketches/mTRKgn44p
 // Daniel Shiffman
 // The Nature of Code
